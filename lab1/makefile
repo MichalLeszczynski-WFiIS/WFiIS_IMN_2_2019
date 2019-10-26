@@ -10,3 +10,6 @@ run:
 
 draw: run
 	gnuplot gnuskrypt.sh
+
+init:
+	pip3 install -r requirements.txt
