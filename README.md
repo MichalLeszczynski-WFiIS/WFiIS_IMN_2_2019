@@ -4,7 +4,7 @@ Code written for subject "Inżynierskie metody nuemryczne" on AGH UST
 ## Running the code:
 To run the code you need to have installed python3, gnuplot and run commands:
 ```
-make init
+make init # in case of packages specified in requirements.txt
 make
 ```
 
