@@ -15,7 +15,7 @@ def time_step_control(d_t_0, x_0, v_0, t_max, alpha, numeric, p ,TOL, S):
         x_n_2_1, v_n_2_1 = numeric(x_n, v_n, 2*d_t, alpha)
 
         # Diff
-        E_x = (x_n_2_2 - x_n_2_1) / (2^p - 1)
+        E_x = (x_n_2_2 - x_n_2_1) / (2**p - 1)
         E_v = (v_n_2_2 - v_n_2_1) / (2**p - 1)
 
         max_E = max(abs(E_x), abs(E_v))
