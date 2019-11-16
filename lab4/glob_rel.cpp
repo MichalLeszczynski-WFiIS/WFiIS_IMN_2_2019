@@ -12,7 +12,7 @@ void glob_rel(double d, double omega, unsigned n_x, unsigned n_y, double epsilon
     file_v.open("glob_rel_v_omega_" + std::to_string(omega) + ".dat");
 
     std::ofstream file_e;
-    file_e.open("glob_rel_err_omega" + std::to_string(omega) + ".dat");
+    file_e.open("glob_rel_err_omega_" + std::to_string(omega) + ".dat");
 
     Matrix V_s;
     for(unsigned i=0; i < n_x+1; i ++)
@@ -79,7 +79,10 @@ void glob_rel(double d, double omega, unsigned n_x, unsigned n_y, double epsilon
         }
         S.push_back(sum);
         file_s << it << " \t" << sum << std::endl;
-        if((S[it+1] - S[it])/S[it] < TOL) break;
+        if(it > 0)
+        {
+            if(fabs(S[it]/S[it-1] - 1.0 ) < TOL) break; // ?????????
+        }        
         it++;
     }
 

@@ -1,36 +1,36 @@
 set term jpeg
 
-set xlabel "argument" # etykieta osi OX
-set ylabel "wartosc" # etykieta osi OY
+set xlabel "x" # etykieta osi OX
+set ylabel "y" # etykieta osi OY
 
-set title "rk2 x(t)"
-set out "rk2-x_t.jpeg"
-plot "rk2-0.01.dat" u 1:3 w l lw 1 t 'TOL=1e-2', "rk2-1e-05.dat" u 1:3 w l lw 1 t 'TOL = 1e-5'
+set title "Relaksacja globalna"
+set out "glob_rel_s.jpeg"
+plot "glob_rel_s_omega_0.600000.dat" u 1:2 w l lw 1 t 'omega=0.6',"glob_rel_s_omega_1.000000.dat" u 1:2 w l lw 1 t 'omega=1.0'
 
-set title "rk2 v(t)"
-set out "rk2-v_t.jpeg"
-plot "rk2-0.01.dat" u 1:4 w l lw 1 t 'TOL=1e-2', "rk2-1e-05.dat" u 1:4 w l lw 1 t 'TOL = 1e-5'
+set title "Relaksacja lokalna"
+set out "loc_rel_s.jpeg"
+plot "loc_rel_s_omega_1.400000.dat" u 1:2 w l lw 1 t 'omega=1.4',"loc_rel_s_omega_1.000000.dat" u 1:2 w l lw 1 t 'omega=1.0'
 
-set title "rk2 dt(t)"
-set out "rk2-dt_t.jpeg"
-plot "rk2-0.01.dat" u 1:2 w l lw 1 t 'TOL=1e-2', "rk2-1e-05.dat" u 1:2 w l lw 1 t 'TOL = 1e-5'
+# 3D
 
-set title "rk2 v(x)"
-set out "rk2-v_x.jpeg"
-plot "rk2-0.01.dat" u 3:4 w l lw 1 t 'TOL=1e-2', "rk2-1e-05.dat" u 3:4 w l lw 1 t 'TOL = 1e-5'
+set xlabel "x" # etykieta osi OX
+set ylabel "y" # etykieta osi OY
+set zlabel "wartosc"
 
-set title "trapez x(t)"
-set out "trapez-x_t.jpeg"
-plot "trapez-0.01.dat" u 1:3 w l lw 1 t 'TOL=1e-2', "trapez-1e-05.dat" u 1:3 w l lw 1 t 'TOL = 1e-5'
+set logscale z
 
-set title "trapez v(t)"
-set out "trapez-v_t.jpeg"
-plot "trapez-0.01.dat" u 1:4 w l lw 1 t 'TOL=1e-2', "trapez-1e-05.dat" u 1:4 w l lw 1 t 'TOL = 1e-5'
+set title "Relaksacja globalna"
+set out "glob_rel_v_0.600000.jpeg"
+splot "glob_rel_v_omega_0.600000.dat" u 1:2:3 w l lw 1 t 'V'
 
-set title "trapez dt(t)"
-set out "trapez-dt_t.jpeg"
-plot "trapez-0.01.dat" u 1:2 w l lw 1 t 'TOL=1e-2', "trapez-1e-05.dat" u 1:2 w l lw 1 t 'TOL = 1e-5'
+set title "Relaksacja globalna"
+set out "glob_rel_v_1.000000.jpeg"
+splot "glob_rel_v_omega_1.000000.dat" u 1:2:3 w l lw 1 t 'V'
 
-set title "trapez v(x)"
-set out "trapez-v_x.jpeg"
-plot "trapez-0.01.dat" u 3:4 w l lw 1 t 'TOL=1e-2', "trapez-1e-05.dat" u 3:4 w l lw 1 t 'TOL = 1e-5'
+set title "Relaksacja globalna"
+set out "glob_rel_err_0.600000.jpeg"
+splot "glob_rel_err_omega_0.600000.dat" u 1:2:3 w l lw 1 t 'Error'
+
+set title "Relaksacja globalna"
+set out "glob_rel_err_1.000000.jpeg"
+splot "glob_rel_err_omega_1.000000.dat" u 1:2:3 w l lw 1 t 'Error'

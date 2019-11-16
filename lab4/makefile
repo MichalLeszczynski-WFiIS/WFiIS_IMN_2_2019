@@ -9,7 +9,11 @@ CALL=$(wildcard callgrind*)
 SRC=$(wildcard *.cpp)
 OBJS=$(SRC:.cpp=.o)
 DEPS=$(SRC:.cpp=.d)
-all:
+
+all: 
+	make gendata
+	make draw
+
 $(EXEC): $(OBJS) 
 	$(CXX) $(CXXFLAGS) $+ -o $@
 
@@ -23,15 +27,30 @@ rebuild:
 	make clean
 	make run
 	make clean
+
 clean:
+	make cleancompiled
+	make cleandata
+
+
+cleandata:
+	rm -f *.dat
+	rm -f callgrind*
+	rm -f *.jpeg
+
+cleancompiled:
 	rm -f *.o
 	rm -f *~
 	rm -f *.d
 	rm -f $(EXEC)
-	rm -f callgrind*
 
-cleandata:
-	rm -f *.dat
+gendata:
+	make clean
+	make run
+	make cleancompiled
+
+draw: 
+	gnuplot gnuskrypt.sh
 
 debug:
 	gdb $(EXEC)
