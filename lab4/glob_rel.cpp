@@ -45,7 +45,7 @@ void glob_rel(double d, double omega, unsigned n_x, unsigned n_y, double epsilon
         {
             for(unsigned j = 1; j <= n_y - 1; j++)
             {
-                V_n[i][j] = 0.25*(V_s[i+1][j] + V_s[i-1][j] + V_s[i][j-1] + d*d/epsilon*rho_1(d*i, d*j, d*n_x, d*n_y));
+                V_n[i][j] = 0.25*(V_s[i+1][j] + V_s[i-1][j] + V_s[i][j+1] + V_s[i][j-1] + d*d/epsilon*rho_1(d*i, d*j, d*n_x, d*n_y));
             }   
         }
 
