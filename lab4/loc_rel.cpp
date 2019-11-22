@@ -7,14 +7,33 @@ void loc_rel(double d, double omega, unsigned n_x, unsigned n_y, double epsilon)
 
     std::ofstream file;
     file.open("loc_rel_s_omega_" + std::to_string(omega) + ".dat");
+    // Tablica gestosci
+    Matrix rho_tab;
+    for(unsigned i=0; i < n_x+1; i ++)
+    {
+        rho_tab.push_back(Array(n_y+1));
+    }
+    for(unsigned i=0; i <= n_x-1; i++)
+        {
+            for(unsigned j=0; j <= n_y-1; j++)
+            {
+            rho_tab[i][j] = rho(d*i, d*j, d*n_x, d*n_y);
+            }
+        }
 
+
+    //inicjalizacja tablicy potencjalu
     Matrix V;
     for(unsigned i=0; i < n_x+1; i ++)
     {
         V.push_back(Array(n_y+1));
     }
     fill_matrix_with(V, 0);
-    fill_array_with(V[0], V_1);
+
+    for(unsigned i=0; i < n_x+1; i ++)
+    {
+        V[i][0] = V_1;
+    }
 
     Array S = {};
     S.push_back(1);
@@ -31,17 +50,17 @@ void loc_rel(double d, double omega, unsigned n_x, unsigned n_y, double epsilon)
         {
             for(unsigned j = 1; j <= n_y - 1; j++)
             {
-                V[i][j] = (1-omega)*V[i][j] + omega/4*(V[i+1][j] + V[i-1][j] + V[i][j-1] + d*d/epsilon*rho_1(d*i, d*j, d*n_x, d*n_y));
+                V[i][j] = (1-omega)*V[i][j] + (omega/4)*(V[i+1][j] + V[i-1][j] + V[i][j+1] + V[i][j-1] + d*d/epsilon*rho_tab[i][j]);
             }   
         }
 
         // 2nd step
-        for(unsigned j = 1; j <= n_y - 1; j++)
+        for(unsigned j = 0; j <= n_y; j++)
         {
             V[0][j] = V[1][j];
         }
 
-        for(unsigned j = 1; j <= n_y - 1; j++)
+        for(unsigned j = 0; j <= n_y; j++)
         {
             V[n_x][j] = V[n_x-1][j];
         }
@@ -51,7 +70,7 @@ void loc_rel(double d, double omega, unsigned n_x, unsigned n_y, double epsilon)
         {
             for(unsigned j=0; j <= n_y-1; j++)
             {
-                sum += d*d*(0.5*pow(((V[i+1][j]-V[i][j])/d),2) + 0.5*pow(((V[i][j+1]-V[i][j])/d),2) - rho_1(d*i, d*j, d*n_x, d*n_y)*V[i][j]);
+                sum += d*d*(0.5*pow(((V[i+1][j]-V[i][j])/d),2) + 0.5*pow(((V[i][j+1]-V[i][j])/d),2) - rho_tab[i][j]*V[i][j]);
             }
         }
         S.push_back(sum);

@@ -22,8 +22,8 @@ int main()
     Array local_omegas;
     local_omegas.push_back(1.0);
     local_omegas.push_back(1.4);
-    // local_omegas.push_back(1.8);
-    // local_omegas.push_back(1.9);
+    local_omegas.push_back(1.8);
+    local_omegas.push_back(1.9);
 
     for(auto omega : local_omegas)
     {

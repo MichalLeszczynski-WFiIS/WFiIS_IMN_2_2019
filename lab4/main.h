@@ -8,6 +8,7 @@
 typedef std::vector<double> Array;
 typedef std::vector<std::vector<double>> Matrix;
 
+double rho(double x, double y, double x_max, double y_max);
 double rho_1(double x, double y, double x_max, double y_max);
 double rho_2(double x, double y, double x_max, double y_max);
 void fill_array_with(Array& A, double val);

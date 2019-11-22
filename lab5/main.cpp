@@ -3,14 +3,15 @@
 
 int main()
 {
+    unsigned max_k = 16;
 
-    unsigned n_x = 128;
-    unsigned n_y = 128;
+    unsigned n_x = 128/16;
+    unsigned n_y = 128/16;
 
     double d = 0.2;
 
-    double x_max = d*n_x;
-    double y_max = d*n_y;
+    double x_max = d*n_x*max_k;
+    double y_max = d*n_y*max_k;
 
     std::vector<unsigned> ks;
     ks.push_back(16);
@@ -18,8 +19,6 @@ int main()
     ks.push_back(4);
     ks.push_back(2);
     ks.push_back(1);
-
-    unsigned max_k = 16;
 
     // Inicjalizacja macierzy
     Matrix V;

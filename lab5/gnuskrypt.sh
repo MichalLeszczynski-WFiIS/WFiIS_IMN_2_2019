@@ -17,20 +17,20 @@ set logscale z
 
 set title "Relaksacja wielosiatkowa"
 set out "wielo_rel_v_k_16.jpeg"
-splot "wielo_rel_v_k_16.dat" u 1:2:3 w l lw 1 t 'V'
+plot "wielo_rel_v_k_16.dat" u 1:2:3 w p pt 5 ps 8 palette notitle
 
 set title "Relaksacja wielosiatkowa"
 set out "wielo_rel_v_k_8.jpeg"
-splot "wielo_rel_v_k_8.dat" u 1:2:3 w l lw 1 t 'V'
+plot "wielo_rel_v_k_8.dat" u 1:2:3 w p pt 5 ps 4 palette notitle
 
 set title "Relaksacja wielosiatkowa"
 set out "wielo_rel_v_k_4.jpeg"
-splot "wielo_rel_v_k_4.dat" u 1:2:3 w l lw 1 t 'V'
+plot "wielo_rel_v_k_4.dat" u 1:2:3 w p pt 5 ps 2 palette notitle
 
 set title "Relaksacja wielosiatkowa"
 set out "wielo_rel_v_k_2.jpeg"
-splot "wielo_rel_v_k_2.dat" u 1:2:3 w d lw 1 t 'V'
+plot "wielo_rel_v_k_2.dat" u 1:2:3 w p pt 5 ps 1 palette notitle
 
 set title "Relaksacja wielosiatkowa"
 set out "wielo_rel_v_k_1.jpeg"
-splot "wielo_rel_v_k_1.dat" u 1:2:3 w d lw 1 t 'V'
+plot "wielo_rel_v_k_1.dat" u 1:2:3 w p pt 7 palette notitle
