@@ -2,7 +2,8 @@
 
 void wielo_rel(Matrix& V, double d, unsigned k, unsigned n_x, unsigned n_y)
 {
-    unsigned k_max = 16;
+
+    double k_max = 16;
 
     std::ofstream file_s;
     file_s.open("wielo_rel_s_k_" + std::to_string(k) + ".dat");
@@ -20,18 +21,18 @@ void wielo_rel(Matrix& V, double d, unsigned k, unsigned n_x, unsigned n_y)
     while(true)
     {
 
-        for(unsigned i = k; i <= k_max*(n_x - 1); i += k)
+        for(unsigned i = k; i <= n_x - k_max; i += k)
         {
-            for(unsigned j = k; j <= k_max*(n_y - 1); j += k)
+            for(unsigned j = k; j <= n_y - k_max; j += k)
             {
                 V[i][j] = 0.25*(V[i+k][j] + V[i-k][j] + V[i][j+k] + V[i][j-k]);
             }   
         }
 
         sum = 0;
-        for(unsigned i=0; i <=k_max*(n_x-1); i+=k)
+        for(unsigned i=0; i <=n_x-k_max; i+=k)
         {
-            for(unsigned j=0; j <= k_max*(n_y-1); j+=k)
+            for(unsigned j=0; j <= n_y-k_max; j+=k)
             {
                 sum += (k*d)*(k*d)/2*(pow(((V[i+k][j]-V[i][j])/(d*2*k) + (V[i+k][j+k]-V[i][j+k])/(d*2*k)),2) + pow(((V[i][j+k]-V[i][j])/(d*2*k) + (V[i+k][j+k]-V[i+k][j])/(d*2*k)),2));
             }
@@ -40,15 +41,15 @@ void wielo_rel(Matrix& V, double d, unsigned k, unsigned n_x, unsigned n_y)
         file_s << it << " \t" << sum << std::endl;
         if(it > 0)
         {
-            if(fabs(S[it]/S[it-1] - 1.0 ) < TOL) break; // ?????????
+            if(fabs(S[it]/S[it-1] - 1.0 ) < TOL) break;
         }        
         it++;
     }
 
 
-    for(unsigned i=0; i <= k_max*(n_x); i+=k)
+    for(unsigned i=0; i <= n_x; i+=k)
         {
-            for(unsigned j=0; j <= k_max*(n_y); j+=k)
+            for(unsigned j=0; j <= n_y; j+=k)
             {
                 file_v << d*i << " " << d*j << " " << V[i][j] << std::endl;
             }
@@ -61,9 +62,9 @@ void wielo_rel(Matrix& V, double d, unsigned k, unsigned n_x, unsigned n_y)
     // Zageszczenie siatki
     if(k != 1)
     {
-        for(unsigned i=0; i < k_max*(n_x); i+=k)
+        for(unsigned i=0; i < n_x; i+=k)
         {
-            for(unsigned j=0; j < k_max*(n_y); j+=k)
+            for(unsigned j=0; j < n_y; j+=k)
             {
                 V[i + k/2][j+k/2] = 0.25 * (V[i][j] + V[i+k][j] + V[i][j+k] + V[i+k][j+k]);
                 V[i+k][j+k/2] = 0.5 * (V[i+k][j] + V[i+k][j+k]);
