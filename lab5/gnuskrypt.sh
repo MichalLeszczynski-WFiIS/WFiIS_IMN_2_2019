@@ -3,9 +3,13 @@ set term jpeg
 set xlabel "it" # etykieta osi OX
 set ylabel "S(it)" # etykieta osi OY
 
+set logscale x
+
 set title "Relaksacja wielosiatkowa"
 set out "wielo_rel_s.jpeg"
 plot "wielo_rel_s_k_16.dat" u 1:2 w l lw 1 t 'k=16',"wielo_rel_s_k_8.dat" u 1:2 w l lw 1 t 'k=8',"wielo_rel_s_k_4.dat" u 1:2 w l lw 1 t 'k=4',"wielo_rel_s_k_2.dat" u 1:2 w l lw 1 t 'k=2',"wielo_rel_s_k_1.dat" u 1:2 w l lw 1 t 'k=1'
+
+unset logscale x
 
 # 3D
 

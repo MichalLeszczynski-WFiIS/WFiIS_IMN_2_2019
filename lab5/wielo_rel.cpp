@@ -3,7 +3,6 @@
 void wielo_rel(Matrix& V, double d, unsigned k, unsigned n_x, unsigned n_y)
 {
 
-    double k_max = 16;
 
     std::ofstream file_s;
     file_s.open("wielo_rel_s_k_" + std::to_string(k) + ".dat");
@@ -21,18 +20,18 @@ void wielo_rel(Matrix& V, double d, unsigned k, unsigned n_x, unsigned n_y)
     while(true)
     {
 
-        for(unsigned i = k; i <= n_x - k_max; i += k)
+        for(unsigned i = k; i <= n_x - 1; i += k)
         {
-            for(unsigned j = k; j <= n_y - k_max; j += k)
+            for(unsigned j = k; j <= n_y - 1; j += k)
             {
                 V[i][j] = 0.25*(V[i+k][j] + V[i-k][j] + V[i][j+k] + V[i][j-k]);
             }   
         }
 
         sum = 0;
-        for(unsigned i=0; i <=n_x-k_max; i+=k)
+        for(unsigned i=0; i <=n_x-1; i+=k)
         {
-            for(unsigned j=0; j <= n_y-k_max; j+=k)
+            for(unsigned j=0; j <= n_y-1; j+=k)
             {
                 sum += (k*d)*(k*d)/2*(pow(((V[i+k][j]-V[i][j])/(d*2*k) + (V[i+k][j+k]-V[i][j+k])/(d*2*k)),2) + pow(((V[i][j+k]-V[i][j])/(d*2*k) + (V[i+k][j+k]-V[i+k][j])/(d*2*k)),2));
             }
