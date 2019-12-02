@@ -1,6 +1,7 @@
 #include "main.h"
 #include "mgmres.h"
 
+
 template<typename T>
 void fill_array_with(std::vector<T>& A, T val)
 {
@@ -38,7 +39,7 @@ void algebr_poisson(unsigned n_x, unsigned n_y, double V_1, double V_2, double V
     Array e(N + n_x + 1);
     for(unsigned l=0; l < N + n_x + 1; l ++)
     {
-        j = floor(l/(n_x - 1));
+        j = floor(l/(n_x + 1));
         i = l - j*(n_x+1);
 
         e[l] = i<=n_x/2 ? e_1 : e_2;
@@ -55,7 +56,7 @@ void algebr_poisson(unsigned n_x, unsigned n_y, double V_1, double V_2, double V
     {   
 
 
-        j = floor(l/(n_x - 1));
+        j = std::floor(l/(n_x + 1));
         i = l - j*(n_x+1);
 
 
@@ -144,12 +145,16 @@ void algebr_poisson(unsigned n_x, unsigned n_y, double V_1, double V_2, double V
     file_a.open("macierz_a_" + std::to_string(n_x) + "_" + std::to_string(e_1) + "_" + std::to_string(e_2) + ".dat");
 
     std::ofstream file_b;
-    file_b.open("wektor_B_" + std::to_string(n_x) + "_" + std::to_string(e_1) + "_" + std::to_string(e_2) + ".dat");
+    file_b.open("wektor_b_" + std::to_string(n_x) + "_" + std::to_string(e_1) + "_" + std::to_string(e_2) + ".dat");
+
+    std::ofstream file_V;
+    file_V.open("POTENCJAL_" + std::to_string(n_x) + "_" + std::to_string(e_1) + "_" + std::to_string(e_2) + "rho_" + std::to_string(!rho_is_zero) + ".dat");
+
 
     for(unsigned l=0; l < N; l++) 
     {
 
-        j = floor(l/(n_x - 1));
+        j = floor(l/(n_x + 1));
         i = l - j*(n_x+1);
 
         file_a << l << " " << i << " " << j << " " << a[l] << std::endl;
@@ -170,6 +175,16 @@ void algebr_poisson(unsigned n_x, unsigned n_y, double V_1, double V_2, double V
 
     pmgmres_ilu_cr(N, nz_num, ia, ja, a, V, b, itrmax, mr, tolabs, tolrel);
 
+    for(unsigned l=0; l < N; l++) 
+    {
+
+        j = floor(l/(n_x + 1));
+        i = l - j*(n_x+1);
+
+        file_V << l << " " << i << " " << j << " " << V[l] << std::endl;
+    }
+
+    file_V.close();
 
     delete[] a;
     delete[] ia;

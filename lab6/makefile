@@ -7,7 +7,7 @@ LIBS = -lm
 CALL=$(wildcard callgrind*)
 
 SRC=$(wildcard *.cpp)
-OBJS=$(SRC:.cpp=.o)
+OBJS=$(SRC:.cpp=.o) 
 DEPS=$(SRC:.cpp=.d)
 
 all: 
