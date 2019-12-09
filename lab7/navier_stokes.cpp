@@ -29,12 +29,8 @@ void navier_stokes(double Q_we)
     fill_matrix_with(Ksi, 0);
 
 
-    std::ofstream file_psi;
-    file_psi.open("n_s_Psi_" + std::to_string(Q_we) + ".dat");
-
-    std::ofstream file_ksi;
-    file_ksi.open("n_s_Ksi_" + std::to_string(Q_we) + ".dat");
-
+    std::ofstream file;
+    file.open("n_s_" + std::to_string(Q_we) + ".dat");
 
 
     Array y;
@@ -47,6 +43,7 @@ void navier_stokes(double Q_we)
 
     /// Poczatek
     bool on_border;
+    bool inside;
     double gamma;
     unsigned j_2 = j_1 + 2;
     unsigned omega;
@@ -64,10 +61,11 @@ void navier_stokes(double Q_we)
         }
         for(unsigned i=1 ; i <= n_x - 1; i ++)
         {
-            for(unsigned j = 0; j <= n_y - 1; j++)
+            for(unsigned j = 1; j <= n_y - 1; j++)
             {
                 on_border = (i==0) || (j==0) || (i==n_x) || (j==n_y) || (i<=i_1 && j==j_1) || (i==i_1 && j<=j_1); 
-                if(!on_border)
+                inside = !(i<=i_1 && j < j_1);
+                if(!on_border && inside)
                 {
                     Psi[i][j] = 0.25*(Psi[i+1][j] + Psi[i-1][j] + Psi[i][j+1] + Psi[i][j-1] - d*d*Ksi[i][j]);
                     Ksi[i][j] = 0.25 * (Ksi[i+1][j] + Ksi[i-1][j] +Ksi[i][j+1] + Ksi[i][j-1]) - omega*rho/(16*mi) * ((Psi[i][j+1] - Psi[i][j-1])*(Ksi[i+1][j] - Ksi[i-1][j])  -  (Psi[i+1][j] - Psi[i-1][j])*(Ksi[i][j+1] - Ksi[i][j-1])); 
@@ -78,28 +76,42 @@ void navier_stokes(double Q_we)
         gamma = 0;
         for(unsigned i = 1; i <= n_x-1; i  ++)
         {
-            gamma += (Psi[i_1][j_2] + Psi[i-1][j_2] + Psi[i][j_2+1] + Psi[i][j_2-1] - 4*Psi[i][j_2] - d*d*Ksi[i][j_2]);
+            gamma += (Psi[i+1][j_2] + Psi[i-1][j_2] + Psi[i][j_2+1] + Psi[i][j_2-1] - 4*Psi[i][j_2] - d*d*Ksi[i][j_2]);
         }
         std::cout << "it: " << it << " gamma:" << gamma << std::endl;
     }
 
-    for(unsigned i = 0; i <= n_x; i++)
+    double u,v;
+    for(unsigned i = 1; i <= n_x-1; i++)
     {
-        for(unsigned j = 0; j <= n_y; j++)
+        for(unsigned j = 1; j <= n_y-1; j++)
         {
-            file_psi << d*i << " " << d*j << " " << Psi[i][j] << std::endl;
-            file_ksi << d*i << " " << d*j << " " << Ksi[i][j] << std::endl;
+            on_border = (i==0) || (j==0) || (i==n_x) || (j==n_y) || (i<=i_1 && j==j_1) || (i==i_1 && j<=j_1); 
+            inside = !(i<=i_1 && j < j_1);
+            if(!on_border && inside)
+            {
+                u = (Psi[i][j+1] - Psi[i][j-1])/(2*d);
+                v = -(Psi[i+1][j] - Psi[i-1][j])/(2*d);  
+            }
+            else
+            {
+                u = 0;
+                v = 0;
+            }
+            
+
+            file << d*i << " " << d*j << " " << Psi[i][j] << " " << Ksi[i][j] << " " << u << " " << v << std::endl;
         }
+        file << std::endl;
     }
 
     /// Koniec
 
-        file_psi.close();
-        file_ksi.close();
-
+        file.close();
+        std::cout << Q_we << " " << Q_wy << std::endl;
 }
 
-void update_Psi(Matrix& Psi, unsigned n_x, unsigned n_y, unsigned i_1, unsigned j_1, Array& y, double Q_we, double Q_wy, double mi)
+inline void update_Psi(Matrix& Psi, unsigned n_x, unsigned n_y, unsigned i_1, unsigned j_1, Array& y, double Q_we, double Q_wy, double mi)
 {
     // Brzeg A
     for (unsigned j = j_1; j <= n_y; j ++)
@@ -138,7 +150,7 @@ void update_Psi(Matrix& Psi, unsigned n_x, unsigned n_y, unsigned i_1, unsigned 
     }
 }
 
-void update_Ksi(Matrix& Ksi, double d, Matrix& Psi, unsigned n_x, unsigned n_y, unsigned i_1, unsigned j_1, Array& y, double Q_we, double Q_wy, double mi)
+inline void update_Ksi(Matrix& Ksi, double d, Matrix& Psi, unsigned n_x, unsigned n_y, unsigned i_1, unsigned j_1, Array& y, double Q_we, double Q_wy, double mi)
 {
     // Brzeg A
     for (unsigned j = j_1; j <= n_y; j ++)
@@ -159,13 +171,13 @@ void update_Ksi(Matrix& Ksi, double d, Matrix& Psi, unsigned n_x, unsigned n_y, 
     }
 
     // Brzeg D
-    for(unsigned i = i_1; i <= n_x - 1; i ++)
+    for(unsigned i = i_1+1; i <= n_x - 1; i ++)
     {
         Ksi[i][0] = 2/(d*d) * (Psi[i][1] - Psi[i][0]);
     }
 
     // Brzeg E
-    for(unsigned j = 1; j <= j_1; j ++)
+    for(unsigned j = 1; j <= j_1-1; j ++)
     {
         Ksi[i_1][j] = 2/(d*d) * (Psi[i_1 + 1][j] - Psi[i_1][j]);
     }

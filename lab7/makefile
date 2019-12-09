@@ -37,6 +37,7 @@ cleandata:
 	rm -f *.dat
 	rm -f callgrind*
 	rm -f *.jpeg
+	rm -f *.png
 
 cleancompiled:
 	rm -f *.o
